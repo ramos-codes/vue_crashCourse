@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Todos v-bind:todos="todos"/>
+    <Todos v-bind:todos="todos" v-on:del-todo="deleteTodo"/>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ const todosArr = [
   {
     id: 2,
     title: 'Todo 2',
-    completed: false
+    completed: true
   },
   {
     id: 3,
@@ -33,6 +33,11 @@ export default {
   data() {
     return {
       todos: todosArr
+    }
+  },
+  methods: {
+    deleteTodo(id) {
+      this.todos= this.todos.filter(todo => todo.id !== id);
     }
   }
 }
