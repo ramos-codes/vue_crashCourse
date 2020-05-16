@@ -10,24 +10,7 @@
 import Todos from './components/Todos';
 import Header from './components/layout/Header';
 import AddTodoItem from './components/AddTodoItem';
-
-const todosArr = [
-  {
-    id: 1,
-    title: 'Todo 1',
-    completed: false
-  },
-  {
-    id: 2,
-    title: 'Todo 2',
-    completed: false
-  },
-  {
-    id: 3,
-    title: 'Todo 3',
-    completed: false
-  }
-]
+import todosJson from './apis/todosJson';
 
 export default {
   name: 'App',
@@ -38,15 +21,29 @@ export default {
   },
   data() {
     return {
-      todos: todosArr
+      todos: []
     }
+  },
+  async mounted() {
+    const response = await todosJson.get('todos?_limit=10');
+
+    this.todos = response.data
   },
   methods: {
     deleteTodo(id) {
+      todosJson.delete(`todos/${id}`)
+        .then(res => res.status(201).json({ data: res.data }))
+        .catch(err => console.error(err));
       this.todos = this.todos.filter(todo => todo.id !== id);
     },
     addTodo(newTodo) {
-      this.todos = [...this.todos, newTodo]
+      const { title, completed } = newTodo
+      todosJson.post('todos', {
+        title,
+        completed
+      })
+      .then(res => this.todos = [...this.todos, res.data])
+      .catch(err => console.log(err));
     }
   }
 }
