@@ -1,11 +1,13 @@
 <template>
   <div id="app">
+    <Header /> 
     <Todos v-bind:todos="todos" v-on:del-todo="deleteTodo"/>
   </div>
 </template>
 
 <script>
-import Todos from './components/Todos'
+import Todos from './components/Todos';
+import Header from './components/layout/Header';
 
 const todosArr = [
   {
@@ -16,7 +18,7 @@ const todosArr = [
   {
     id: 2,
     title: 'Todo 2',
-    completed: true
+    completed: false
   },
   {
     id: 3,
@@ -28,7 +30,8 @@ const todosArr = [
 export default {
   name: 'App',
   components: {
-    Todos
+    Todos,
+    Header
   },
   data() {
     return {
